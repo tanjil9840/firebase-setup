@@ -1,9 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 
-const Register = () => {
 
-   const {registerUser} = useContext(AuthContext)
+const Register = () => {
+    const [error, setError]=useState("")
+    const [emailError, setEmailError]=useState(" ")
+
+   const {registerUser,setUser} = useContext(AuthContext)
    
     const handleRegister=(e)=>{
         e.preventDefault()
@@ -13,6 +16,40 @@ const Register = () => {
         const password=e.target.password.value;
         const confirmPassword=e.target.confirmPassword.value;
         registerUser(email,password)
+        .then(result=>{
+            setUser(result.user)
+            console.log(result.user)
+        })
+        .catch(error=>{
+            console.error(error.message)
+        })
+
+        if(!/@gmail\.com$/.email){
+            setEmailError('email no founded')
+            return
+        }
+
+        setEmailError(' ')
+
+        if (password.length<6){
+            setError('password must be atleast 6 carractor')
+            return
+        }
+
+
+        if(password !==confirmPassword){
+            setError("passwords didn't match")
+            return
+        }
+
+        if(!/(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(password)){
+            setError("please charcator number and spring")
+            return
+        }
+
+
+        setError(' ')
+        
 
        
         
@@ -44,13 +81,19 @@ const Register = () => {
             </div>
             <div>
                 <p>confirm password </p>
-                <input type="Confirm-password" placeholder="confirm password"  name='confirmPassword' className="input input-bordered" required />
+                <input type="password" placeholder="confirm password"  name='confirmPassword' className="input input-bordered" required />
                 
             </div>
             
-            <button type='submit' className='btn btn-primary' >Register</button>
+            <button type='submit' className='btn btn-primary' >Register</button> <br />
             
-            
+            {
+                error && <small className='text-red-700' > {error} </small>
+        
+            }
+            {
+                emailError&& <small> {emailError} </small>
+            }
             
             
             

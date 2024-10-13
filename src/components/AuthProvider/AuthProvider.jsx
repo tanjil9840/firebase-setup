@@ -4,12 +4,14 @@ import auth from '../firebase/firebase.config';
 
 export const AuthContext= createContext(null)
 
+
+
 const AuthProvider = ({children}) => {
+    const [user, setUser]=useState(null)
 
     const registerUser = (email, password) =>{
-        createUserWithEmailAndPassword(auth, email, password )
-        .then(result=>console.log(result.user))
-        .catch(error=> console.error(error))
+      return  createUserWithEmailAndPassword(auth, email, password )
+        
 
     }
 
@@ -24,10 +26,13 @@ const AuthProvider = ({children}) => {
     }
     const authInfo={
         registerUser,
-        loginUser
+        loginUser,
+        user, 
+        setUser,
+        
     }
   
-    const [user, setUser]=useState('nai user')
+   
     console.log(children)
     return (
         <div>
