@@ -1,0 +1,2 @@
+1.create a contex as below    const dataContext= createContext(null)
+Warp the children components with context provider. 
